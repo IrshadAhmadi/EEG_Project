@@ -78,8 +78,7 @@ for i = 1:length(SubjectNames)
         'keepevents',    0);     % Do not retain individual events in the output
 end
 
-% Process: Average all epochs for group files
-% This step computes the group-level average
+% Average all epochs for group files and computes the group-level average
 sFilesGroup = bst_process('CallProcess', 'process_average', sFilesGroup, [], ...
     'avgtype',       1, ...  % Average all epochs (type 1)
     'avg_func',      1, ...  % Use arithmetic mean
@@ -100,7 +99,7 @@ sFiles1 = {'Group_analysis/actual/data_averaged_240806_1133.mat'};
 % Start a new report for the first set of input files
 bst_report('Start', sFiles1);
 
-% Process: Compute power spectrum density (PSD) using Welch's method
+% Computes power spectrum density (PSD) using Welch's method
 sFiles1 = bst_process('CallProcess', 'process_psd', sFiles1, [], ...
     'timewindow',  [], ...           % Use full time window
     'win_length',  4, ...            % Window length for PSD computation
@@ -117,7 +116,7 @@ sFiles1 = bst_process('CallProcess', 'process_psd', sFiles1, [], ...
          'Output',          'all', ...             % Output all results
          'SaveKernel',      0));                   % Do not save kernel
 
-% Process: Apply spatial smoothing to the first dataset
+% Apply spatial smoothing to the first dataset
 sFiles1 = bst_process('CallProcess', 'process_ssmooth_surfstat', sFiles1, [], ...
     'fwhm',      3, ...             % Full width at half maximum for smoothing
     'overwrite', 1);                % Overwrite existing data
@@ -135,7 +134,7 @@ sFiles2 = {'Group_analysis/boundary/results_sLORETA_EEG_KERNEL_240806_1138.mat'}
 % Start a new report for the second set of input files
 bst_report('Start', sFiles2);
 
-% Process: Compute power spectrum density (PSD) using Welch's method for sLORETA
+% Computes power spectrum density (PSD) using Welch's method for sLORETA
 sFiles2 = bst_process('CallProcess', 'process_psd', sFiles2, [], ...
     'timewindow',  [], ...           % Use full time window
     'win_length',  4, ...            % Window length for PSD computation
@@ -153,12 +152,12 @@ sFiles2 = bst_process('CallProcess', 'process_psd', sFiles2, [], ...
          'Output',          'all', ...             % Output all results
          'SaveKernel',      0));                   % Do not save kernel
 
-% Process: Applying spatial smoothing to the second dataset
+% Applying spatial smoothing to the second dataset
 sFiles2 = bst_process('CallProcess', 'process_ssmooth_surfstat', sFiles2, [], ...
     'fwhm',      3, ...             % Full width at half maximum for smoothing
     'overwrite', 1);                % Overwrite existing data
 
-% Process: Spectrum normalization for the second dataset
+% Spectrum normalization for the second dataset
 sFiles2 = bst_process('CallProcess', 'process_tf_norm', sFiles2, [], ...
     'normalize', 'relative2020', ...  % Normalize using relative power (divide by total power)
     'overwrite', 0);                  % Do not overwrite existing data

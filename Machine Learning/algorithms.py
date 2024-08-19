@@ -11,11 +11,11 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 import xgboost as xgb
 
-# Load the dataset from the specified file path
+# Loading the dataset from the specified file path
 file_path = 'Dataset/Train/eeg_features.xlsx'
 data = pd.read_excel(file_path)
 
-# Separate the dataset into features (X) and labels (y)
+# Separates the dataset into features (X) and labels (y)
 X = data.drop(columns='label')  # Features
 y = data['label']  # Target variable
 
@@ -23,7 +23,7 @@ y = data['label']  # Target variable
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-# Split the dataset into training and testing sets
+# Splits the dataset into training and testing sets
 # stratify=y ensures that the proportion of labels in the train and test sets are the same
 X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.2, random_state=42, stratify=y)
 
@@ -60,10 +60,10 @@ models = {
     })
 }
 
-# Initialize a list to store the results of each model for comparison
+# Initializes a list to store the results of each model for comparison
 results = []
 
-# Dictionary to store ROC curve data for each model
+# Dictionary path to store ROC curve data for each model
 roc_curves = {}
 
 # Train and evaluate each model using GridSearchCV
@@ -75,13 +75,13 @@ for model_name, (model, param_grid) in models.items():
     # Retrieve the best model based on grid search
     best_model = grid_search.best_estimator_
 
-    # Make predictions on the test set
+    # predictions on the test set
     y_pred = best_model.predict(X_test)
 
     # Get the predicted probabilities for the positive class
     y_proba = best_model.predict_proba(X_test)[:, 1]
 
-    # Calculate evaluation metrics
+    # Calculating evaluation metrics
     accuracy = accuracy_score(y_test, y_pred)  # Overall accuracy
     precision = precision_score(y_test, y_pred, pos_label=1)  # Precision for positive class
     recall = recall_score(y_test, y_pred, pos_label=1)  # Recall for positive class
@@ -93,11 +93,11 @@ for model_name, (model, param_grid) in models.items():
     auc = roc_auc_score(y_test, y_proba)  # Area under the ROC curve
     cm = confusion_matrix(y_test, y_pred)  # Confusion matrix
 
-    # Store ROC curve data for plotting
+    # Stores ROC curve data for plotting
     fpr, tpr, _ = roc_curve(y_test, y_proba)
     roc_curves[model_name] = (fpr, tpr, auc)
 
-    # Store the results in a dictionary and append to the results list
+    # Stores the results in a dictionary and append to the results list
     results.append({
         "Model": model_name,
         "Accuracy": accuracy,
